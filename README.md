@@ -35,11 +35,20 @@ else
 
 #### 读/写 [read/write]
 ```CSharp
-short re = ENT.ReadWords(PlcMemory.DM, short.Parse(1000), short.Parse(count), out rd);
+ENT.ReadWord();//读单个
+ENT.ReadWords();//读多个
+ENT.WriteWord();//写单个
+ENT.WriteWords();//写多个
+ENT.GetBitState();//读单个位
+ENT.SetBitState();//写单个位
+ENT.ReadReal();//读单个浮点
+ENT.WriteReal();//写单个浮点
 ```
 #
 ### 版本记录：[version history]
 ###### *表示部分代码可能与前版本不兼容 [*For some code is incompatible with previous versions]
+## v3.0.1
+###### 1.支持写单个浮点 [Add WriteReal()]
 ## v3.0.0
 ###### 1.拷贝项目，并升级到新的Net支持 [Copy project,New Net support]
 

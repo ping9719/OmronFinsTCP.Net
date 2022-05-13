@@ -412,5 +412,28 @@ namespace OmronFinsTCP.Net
                 return -1;
             }
         }
+
+        /// <summary>
+        /// 写一个浮点数的方法，单精度，在PLC中占两个字
+        /// </summary>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址，会读取两个连续的地址，因为单精度在PLC中占两个字</param>
+        /// <param name="reData">返回一个float型</param>
+        /// <returns></returns>
+        public short WriteReal(PlcMemory mr, short ch, float reData)
+        {
+            byte[] temp = BitConverter.GetBytes(reData);
+            short[] wdata = new short[2];
+
+            wdata[0] = temp[0];
+            wdata[0] = (short)((int)wdata[0] * 256 + (int)(temp[1]));
+            //转换为PLC的高位在前储存方式
+            wdata[1] = temp[3];
+            wdata[1] = (short)((int)wdata[1] * 256 + (int)(temp[2]));
+
+            short re = WriteWords(mr, ch, (short)2, wdata);
+
+            return re;
+        }
     }
 }
