@@ -36,7 +36,7 @@ namespace OmronFinsTCP.Net
         /// <param name="rIP">PLC的IP地址</param>
         /// <param name="rPort">端口号，默认9600</param>
         /// <param name="timeOut">超时时间，默认3000毫秒</param>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short Link(string rIP, int rPort, short timeOut = 3000)
         {
             if (BasicClass.PingCheck(rIP, timeOut))
@@ -80,7 +80,7 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 关闭PLC操作对象的TCP连接
         /// </summary>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short Close()
         {
             try
@@ -96,13 +96,62 @@ namespace OmronFinsTCP.Net
         }
 
         /// <summary>
+        /// 得到数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16，bool，float</typeparam>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址（100或100.01）</param>
+        /// <returns></returns>
+        public T GetData<T>(PlcMemory mr, object ch) where T : new()
+        {
+            T t = new T();
+            if (t is Int16)
+            {
+                var isok = ReadWord(mr, short.Parse(ch.ToString()), out short reData);
+                if (isok == 0)
+                    return (T)(object)reData;
+            }
+            else if (t is bool)
+            {
+                var isok = GetBitState(mr, ch.ToString(), out short bs);
+                if (isok == 0)
+                    return (T)(object)(bs == 1);
+            }
+            else if (t is float)
+            {
+                var isok = ReadReal(mr, short.Parse(ch.ToString()), out float reData);
+                if (isok == 0)
+                    return (T)(object)reData;
+            }
+            else
+            {
+                throw new Exception("暂不支持此类型");
+            }
+
+            return t;
+        }
+
+        /// <summary>
+        /// 读值方法（多个连续值）
+        /// </summary>
+        /// <param name="mrch">起始地址。如：D100,W100.1</param>
+        /// <param name="cnt">地址个数</param>
+        /// <param name="reData">返回值</param>
+        /// <returns>0为成功</returns>
+        public short ReadWords(string mrch, short cnt, out short[] reData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return ReadWords(mr, short.Parse(txtq), cnt, out reData);
+        }
+
+        /// <summary>
         /// 读值方法（多个连续值）
         /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">起始地址</param>
         /// <param name="cnt">地址个数</param>
         /// <param name="reData">返回值</param>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short ReadWords(PlcMemory mr, short ch, short cnt, out short[] reData)
         {
             reData = new short[(int)(cnt)];//储存读取到的数据
@@ -158,10 +207,22 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 读单个字方法
         /// </summary>
-        /// <param name="mr"></param>
-        /// <param name="ch"></param>
-        /// <param name="reData"></param>
-        /// <returns></returns>
+        /// <param name="mrch">起始地址。如：D100,W100.1</param>
+        /// <param name="reData">返回值</param>
+        /// <returns>0为成功</returns>
+        public short ReadWord(string mrch, out short reData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return ReadWord(mr, short.Parse(txtq), out reData);
+        }
+
+        /// <summary>
+        /// 读单个字方法
+        /// </summary>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址</param>
+        /// <param name="reData">返回值</param>
+        /// <returns>0为成功</returns>
         public short ReadWord(PlcMemory mr, short ch, out short reData)
         {
             short[] temp;
@@ -179,13 +240,26 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 写值方法（多个连续值）
         /// </summary>
+        /// <param name="mrch">起始地址。如：D100,W100.1</param>
+        /// <param name="cnt">地址个数</param>
+        /// <param name="inData">写入值</param>
+        /// <returns>0为成功</returns>
+        public short WriteWords(string mrch, short cnt, short[] inData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return WriteWords(mr, short.Parse(txtq), cnt, inData);
+        }
+
+        /// <summary>
+        /// 写值方法（多个连续值）
+        /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">起始地址</param>
         /// <param name="cnt">地址个数</param>
         /// <param name="inData">写入值</param>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short WriteWords(PlcMemory mr, short ch, short cnt, short[] inData)
-        {            
+        {
             byte[] buffer = new byte[30];
             byte[] arrayhead = FinsClass.FinsCmd(RorW.Write, mr, MemoryType.Word, ch, 00, cnt);//前34字节和读指令基本一直，还需要拼接下面的输入数据数组
             byte[] wdata = new byte[(int)(cnt * 2)];
@@ -240,10 +314,22 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 写单个字方法
         /// </summary>
-        /// <param name="mr"></param>
-        /// <param name="ch"></param>
-        /// <param name="inData"></param>
-        /// <returns></returns>
+        /// <param name="mrch">起始地址。如：D100,W100.1</param>
+        /// <param name="inData">写入数据</param>
+        /// <returns>0为成功</returns>
+        public short WriteWord(string mrch, short inData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return WriteWord(mr, short.Parse(txtq), inData);
+        }
+
+        /// <summary>
+        /// 写单个字方法
+        /// </summary>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">地址</param>
+        /// <param name="inData">写入数据</param>
+        /// <returns>0为成功</returns>
         public short WriteWord(PlcMemory mr, short ch, short inData)
         {
             short[] temp = new short[] { inData };
@@ -259,10 +345,22 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 读值方法-按位bit（单个）
         /// </summary>
+        /// <param name="mrch">起始地址。如：W100.1</param>
+        /// <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
+        /// <returns>0为成功</returns>
+        public short GetBitState(string mrch, out short bs)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return GetBitState(mr, txtq, out bs);
+        }
+
+        /// <summary>
+        /// 读值方法-按位bit（单个）
+        /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">地址000.00</param>
         /// <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short GetBitState(PlcMemory mr, string ch, out short bs)
         {
             bs = new short();
@@ -311,10 +409,22 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 写值方法-按位bit（单个）
         /// </summary>
+        /// <param name="mrch">起始地址。如：W100.1</param>
+        /// <param name="bs">开关状态枚举EtherNetPLC.BitState，0/1</param>
+        /// <returns>0为成功</returns>
+        public short SetBitState(string mrch, BitState bs)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return SetBitState(mr, txtq, bs);
+        }
+
+        /// <summary>
+        /// 写值方法-按位bit（单个）
+        /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">地址000.00</param>
         /// <param name="bs">开关状态枚举EtherNetPLC.BitState，0/1</param>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short SetBitState(PlcMemory mr, string ch, BitState bs)
         {
             byte[] buffer = new byte[30];
@@ -364,11 +474,23 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 读一个浮点数的方法，单精度，在PLC中占两个字
         /// </summary>
+        /// <param name="mrch">起始地址，会读取两个连续的地址，因为单精度在PLC中占两个字</param>
+        /// <param name="reData">返回一个float型</param>
+        /// <returns>0为成功</returns>
+        public short ReadReal(string mrch, out float reData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return ReadReal(mr, short.Parse(txtq), out reData);
+        }
+
+        /// <summary>
+        /// 读一个浮点数的方法，单精度，在PLC中占两个字
+        /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">起始地址，会读取两个连续的地址，因为单精度在PLC中占两个字</param>
         /// <param name="reData">返回一个float型</param>
-        /// <returns></returns>
-        public short ReadReal(PlcMemory mr, short ch,out float reData)
+        /// <returns>0为成功</returns>
+        public short ReadReal(PlcMemory mr, short ch, out float reData)
         {
             reData = new float();
             int num = (int)(30 + 2 * 2);//接收数据(Text)的长度,字节数
@@ -416,10 +538,22 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 写一个浮点数的方法，单精度，在PLC中占两个字
         /// </summary>
+        /// <param name="mrch">起始地址，会读取两个连续的地址，因为单精度在PLC中占两个字</param>
+        /// <param name="reData">返回一个float型</param>
+        /// <returns>0为成功</returns>
+        public short WriteReal(string mrch, float reData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return WriteReal(mr, short.Parse(txtq), reData);
+        }
+
+        /// <summary>
+        /// 写一个浮点数的方法，单精度，在PLC中占两个字
+        /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">起始地址，会读取两个连续的地址，因为单精度在PLC中占两个字</param>
         /// <param name="reData">返回一个float型</param>
-        /// <returns></returns>
+        /// <returns>0为成功</returns>
         public short WriteReal(PlcMemory mr, short ch, float reData)
         {
             byte[] temp = BitConverter.GetBytes(reData);

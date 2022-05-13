@@ -7,14 +7,14 @@ using System.Net.NetworkInformation;
 
 namespace OmronFinsTCP.Net
 {
-    class BasicClass
+    partial class BasicClass
     {
         internal static TcpClient Client;
         internal static NetworkStream Stream;
         internal static byte pcNode, plcNode;
 
         //检查PLC链接状况
-        internal static bool PingCheck(string ip,int timeOut)
+        internal static bool PingCheck(string ip, int timeOut)
         {
             Ping ping = new Ping();
             PingReply pr = ping.Send(ip, timeOut);

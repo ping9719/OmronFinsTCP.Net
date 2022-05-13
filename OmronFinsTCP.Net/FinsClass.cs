@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OmronFinsTCP.Net
 {
-    class FinsClass
+    partial class FinsClass
     {
         /// <summary>
         /// 获取内存区码
@@ -26,7 +26,7 @@ namespace OmronFinsTCP.Net
                     case PlcMemory.HR:
                         return 0x32;
                     case PlcMemory.AR:
-                        return 0x33;  
+                        return 0x33;
                     case PlcMemory.DM:
                         return 0x02;
                     default:

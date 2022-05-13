@@ -158,7 +158,7 @@ namespace FinsDebuger
             System.Diagnostics.Stopwatch sp = new System.Diagnostics.Stopwatch();
             sp.Start();
             string bitAdd = txtBitAdd.Text.Trim();
-            short re = ENT.SetBitState(PlcMemory.DM, bitAdd, BitState.ON);
+            short re = ENT.SetBitState(PlcMemory.WR, bitAdd, BitState.ON);
             sp.Stop();
             txtUseTimeB.Text = sp.Elapsed.TotalMilliseconds.ToString() + "ms";
             if (re != 0)
@@ -177,7 +177,7 @@ namespace FinsDebuger
             System.Diagnostics.Stopwatch sp = new System.Diagnostics.Stopwatch();
             sp.Start();
             string bitAdd = txtBitAdd.Text.Trim();
-            short re = ENT.SetBitState(PlcMemory.DM, bitAdd, BitState.OFF);
+            short re = ENT.SetBitState(PlcMemory.WR, bitAdd, BitState.OFF);
             sp.Stop();
             txtUseTimeB.Text = sp.Elapsed.TotalMilliseconds.ToString() + "ms";
             if (re != 0)
@@ -197,7 +197,7 @@ namespace FinsDebuger
             sp.Start();
             string bitAdd = txtBitAdd.Text.Trim();
             short bs;
-            short re = ENT.GetBitState(PlcMemory.DM, bitAdd, out bs);
+            short re = ENT.GetBitState(PlcMemory.WR, bitAdd, out bs);
             sp.Stop();
             txtUseTimeB.Text = sp.Elapsed.TotalMilliseconds.ToString() + "ms";
             if (re != 0)

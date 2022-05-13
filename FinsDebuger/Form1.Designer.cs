@@ -72,7 +72,7 @@
             this.txtPlcip.Name = "txtPlcip";
             this.txtPlcip.Size = new System.Drawing.Size(120, 21);
             this.txtPlcip.TabIndex = 0;
-            this.txtPlcip.Text = "172.29.29.26";
+            this.txtPlcip.Text = "10.10.56.14";
             // 
             // btnCon
             // 

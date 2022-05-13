@@ -5,8 +5,8 @@ using System.Text;
 
 namespace OmronFinsTCP.Net
 {
-    class ErrorCode
-    {        
+    partial class ErrorCode
+    {
         /// <summary>
         /// （若返回的头指令为3）检查命令头中的错误代码
         /// </summary>

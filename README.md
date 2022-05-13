@@ -26,7 +26,7 @@ FinsDebuger/Form1.cs
 using OmronFinsTCP.Net;
 
 EtherNetPLC ENT = new EtherNetPLC();
-short re = ENT.Link("192.168.1.100", 9600);
+short re = ENT.Link("192.168.1.100", 9600)
 if (re == 0)
     Console.WriteLine("ok");
 else
@@ -35,6 +35,7 @@ else
 
 #### 读/写 [read/write]
 ```CSharp
+/*所有方法返回0为成功*/
 ENT.ReadWord();//读单个
 ENT.ReadWords();//读多个
 ENT.WriteWord();//写单个
