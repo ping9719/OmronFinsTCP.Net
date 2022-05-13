@@ -52,7 +52,7 @@ namespace FinsDebuger
                 string plcip = txtPlcip.Text.Trim();
                 string plcport = txtPlcport.Text.Trim();
                 ENT = new EtherNetPLC();
-                short re = ENT.Link(plcip, short.Parse(plcport),500);
+                short re = ENT.Link(plcip, int.Parse(plcport),500);
                 if (re == 0)
                 {
                     btnCon.Text = "断开";

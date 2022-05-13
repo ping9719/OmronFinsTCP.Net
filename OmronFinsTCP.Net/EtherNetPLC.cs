@@ -37,11 +37,11 @@ namespace OmronFinsTCP.Net
         /// <param name="rPort">端口号，默认9600</param>
         /// <param name="timeOut">超时时间，默认3000毫秒</param>
         /// <returns></returns>
-        public short Link(string rIP, short rPort, short timeOut = 3000)
+        public short Link(string rIP, int rPort, short timeOut = 3000)
         {
-            if(BasicClass.PingCheck(rIP,timeOut))
+            if (BasicClass.PingCheck(rIP, timeOut))
             {
-                BasicClass.Client.Connect(rIP, (int)rPort);
+                BasicClass.Client.Connect(rIP, rPort);
                 BasicClass.Stream = BasicClass.Client.GetStream();
                 Thread.Sleep(10);
 
