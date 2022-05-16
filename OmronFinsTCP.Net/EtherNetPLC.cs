@@ -95,49 +95,111 @@ namespace OmronFinsTCP.Net
             }
         }
 
-        //#region 泛型方式
-        ///// <summary>
-        ///// 得到数据
-        ///// </summary>
-        ///// <typeparam name="T">支持：int16，bool，float</typeparam>
-        ///// <param name="mr">地址类型枚举</param>
-        ///// <param name="ch">起始地址（100或100.01）</param>
-        ///// <returns></returns>
-        //public T GetData<T>(PlcMemory mr, object ch) where T : new()
-        //{
-        //    T t = new T();
-        //    if (t is Int16)
-        //    {
-        //        var isok = ReadWord(mr, short.Parse(ch.ToString()), out short reData);
-        //        if (isok == 0)
-        //            return (T)(object)reData;
-        //    }
-        //    if (t is Int32)
-        //    {
-        //        var isok = ReadInt32(mr, short.Parse(ch.ToString()), out int reData);
-        //        if (isok == 0)
-        //            return (T)(object)reData;
-        //    }
-        //    else if (t is bool)
-        //    {
-        //        var isok = GetBitState(mr, ch.ToString(), out short bs);
-        //        if (isok == 0)
-        //            return (T)(object)(bs == 1);
-        //    }
-        //    else if (t is float)
-        //    {
-        //        var isok = ReadReal(mr, short.Parse(ch.ToString()), out float reData);
-        //        if (isok == 0)
-        //            return (T)(object)reData;
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("暂不支持此类型");
-        //    }
+        #region 泛型方式
+        /// <summary>
+        /// 得到一个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
+        /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
+        /// <returns>结果值</returns>
+        public T GetData<T>(string mrch) where T : new()
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return GetData<T>(mr, txtq);
+        }
 
-        //    return t;
-        //}
-        //#endregion
+        /// <summary>
+        /// 得到一个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址（地址：100；位：100.01）</param>
+        /// <returns>结果值</returns>
+        public T GetData<T>(PlcMemory mr, object ch) where T : new()
+        {
+            T t = new T();
+            if (t is Int16)
+            {
+                var isok = ReadWord(mr, short.Parse(ch.ToString()), out short reData);
+                if (isok == 0)
+                    return (T)(object)reData;
+            }
+            if (t is Int32)
+            {
+                var isok = ReadInt32(mr, short.Parse(ch.ToString()), out int reData);
+                if (isok == 0)
+                    return (T)(object)reData;
+            }
+            else if (t is bool)
+            {
+                var isok = GetBitState(mr, ch.ToString(), out short bs);
+                if (isok == 0)
+                    return (T)(object)(bs == 1);
+            }
+            else if (t is float)
+            {
+                var isok = ReadReal(mr, short.Parse(ch.ToString()), out float reData);
+                if (isok == 0)
+                    return (T)(object)reData;
+            }
+            else
+            {
+                throw new Exception("暂不支持此类型");
+            }
+
+            return t;
+        }
+
+        /// <summary>
+        /// 设置一个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
+        /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
+        /// <param name="inData">写入的数据</param>
+        /// <returns>是否成功</returns>
+        public bool SetData<T>(string mrch, T inData) where T : new()
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return SetData(mr, txtq, inData);
+        }
+
+        /// <summary>
+        /// 设置一个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址（地址：100；位：100.01）</param>
+        /// <param name="inData">写入的数据</param>
+        /// <returns>是否成功</returns>
+        public bool SetData<T>(PlcMemory mr, object ch, T inData) where T : new()
+        {
+            T t = new T();
+            short isok = -1;
+
+            if (t is Int16 dInt16)
+            {
+                isok = WriteWord(mr, short.Parse(ch.ToString()), dInt16);
+            }
+            if (t is Int32 dInt32)
+            {
+                isok = WriteInt32(mr, short.Parse(ch.ToString()), dInt32);
+            }
+            else if (t is bool dBool)
+            {
+                isok = SetBitState(mr, ch.ToString(), dBool ? BitState.ON : BitState.OFF);
+            }
+            else if (t is float dFloat)
+            {
+                isok = WriteReal(mr, short.Parse(ch.ToString()), dFloat);
+            }
+            else
+            {
+                throw new Exception("暂不支持此类型");
+            }
+
+            return isok == 0;
+        }
+        #endregion
 
         /// <summary>
         /// 读值方法（多个连续值）

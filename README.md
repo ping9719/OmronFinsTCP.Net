@@ -33,7 +33,7 @@ else
     Console.WriteLine("err");
 ```
 
-#### 读/写 [read/write]
+#### 普通方式：读/写 [read/write]
 ```CSharp
 /*所有方法返回0为成功*/
 ENT.ReadWord();//读单个Int16
@@ -47,12 +47,27 @@ ENT.WriteReal();//写单个浮点
 ENT.ReadInt32();//读单个Int32
 ENT.WriteInt32();//写单个Int32
 ```
+
+#### 泛型方式：读/写 [Use T:read/write]
+```CSharp
+/*T支持的类型为：int16,int32,bool,float*/
+ENT.GetData<T>();//读一个数据
+ENT.SetData<T>();//写一个数据
+
+//未来可能推出... [being developed...]
+ENT.GetDatas<T>();//读多个数据
+ENT.SetDatas<T>();//写多个数据
+```
+
 #
 ### 版本记录：[version history]
 ###### *表示部分代码可能与前版本不兼容 [*For some code is incompatible with previous versions]
+## v3.1.0
+###### 1.支持泛型读写单个 [Add GetData\<T>(),SetData\<T>()]
 ## v3.0.2
 ###### 1.修复写单个浮点BUG [Amend WriteReal()]
 ###### 2.支持读写Int32 [Add ReadInt32(),WriteInt32()]
+###### 3.读写重载对字符串解析的支持，如'D100;W100.1' [Read/write overloading support for string parsing]
 ## v3.0.1
 ###### 1.支持写单个浮点 [Add WriteReal()]
 ## v3.0.0
