@@ -95,41 +95,49 @@ namespace OmronFinsTCP.Net
             }
         }
 
-        /// <summary>
-        /// 得到数据
-        /// </summary>
-        /// <typeparam name="T">支持：int16，bool，float</typeparam>
-        /// <param name="mr">地址类型枚举</param>
-        /// <param name="ch">起始地址（100或100.01）</param>
-        /// <returns></returns>
-        public T GetData<T>(PlcMemory mr, object ch) where T : new()
-        {
-            T t = new T();
-            if (t is Int16)
-            {
-                var isok = ReadWord(mr, short.Parse(ch.ToString()), out short reData);
-                if (isok == 0)
-                    return (T)(object)reData;
-            }
-            else if (t is bool)
-            {
-                var isok = GetBitState(mr, ch.ToString(), out short bs);
-                if (isok == 0)
-                    return (T)(object)(bs == 1);
-            }
-            else if (t is float)
-            {
-                var isok = ReadReal(mr, short.Parse(ch.ToString()), out float reData);
-                if (isok == 0)
-                    return (T)(object)reData;
-            }
-            else
-            {
-                throw new Exception("暂不支持此类型");
-            }
+        //#region 泛型方式
+        ///// <summary>
+        ///// 得到数据
+        ///// </summary>
+        ///// <typeparam name="T">支持：int16，bool，float</typeparam>
+        ///// <param name="mr">地址类型枚举</param>
+        ///// <param name="ch">起始地址（100或100.01）</param>
+        ///// <returns></returns>
+        //public T GetData<T>(PlcMemory mr, object ch) where T : new()
+        //{
+        //    T t = new T();
+        //    if (t is Int16)
+        //    {
+        //        var isok = ReadWord(mr, short.Parse(ch.ToString()), out short reData);
+        //        if (isok == 0)
+        //            return (T)(object)reData;
+        //    }
+        //    if (t is Int32)
+        //    {
+        //        var isok = ReadInt32(mr, short.Parse(ch.ToString()), out int reData);
+        //        if (isok == 0)
+        //            return (T)(object)reData;
+        //    }
+        //    else if (t is bool)
+        //    {
+        //        var isok = GetBitState(mr, ch.ToString(), out short bs);
+        //        if (isok == 0)
+        //            return (T)(object)(bs == 1);
+        //    }
+        //    else if (t is float)
+        //    {
+        //        var isok = ReadReal(mr, short.Parse(ch.ToString()), out float reData);
+        //        if (isok == 0)
+        //            return (T)(object)reData;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("暂不支持此类型");
+        //    }
 
-            return t;
-        }
+        //    return t;
+        //}
+        //#endregion
 
         /// <summary>
         /// 读值方法（多个连续值）
@@ -557,13 +565,86 @@ namespace OmronFinsTCP.Net
         public short WriteReal(PlcMemory mr, short ch, float reData)
         {
             byte[] temp = BitConverter.GetBytes(reData);
-            short[] wdata = new short[2];
 
-            wdata[0] = temp[0];
-            wdata[0] = (short)((int)wdata[0] * 256 + (int)(temp[1]));
-            //转换为PLC的高位在前储存方式
-            wdata[1] = temp[3];
-            wdata[1] = (short)((int)wdata[1] * 256 + (int)(temp[2]));
+            short[] wdata = new short[] { 0, 0 };
+            if (temp != null)
+                wdata[0] = BitConverter.ToInt16(temp, 0);
+            if (temp.Length > 2)
+                wdata[1] = BitConverter.ToInt16(temp, 2);
+
+            short re = WriteWords(mr, ch, (short)2, wdata);
+
+            return re;
+        }
+
+        /// <summary>
+        /// 读一个int32的方法，在PLC中占两个字
+        /// </summary>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址，会读取两个连续的地址，因为int32在PLC中占两个字</param>
+        /// <param name="reData">返回一个int型</param>
+        /// <returns>0为成功</returns>
+        public short ReadInt32(PlcMemory mr, short ch, out int reData)
+        {
+            reData = new int();
+            int num = (int)(30 + 2 * 2);//接收数据(Text)的长度,字节数
+            byte[] buffer = new byte[num];//用于接收数据的缓存区大小
+            byte[] array = FinsClass.FinsCmd(RorW.Read, mr, MemoryType.Word, ch, 00, 2);
+            if (BasicClass.SendData(array) == 0)
+            {
+                if (BasicClass.ReceiveData(buffer) == 0)
+                {
+                    //命令返回成功，继续查询是否有错误码，然后在读取数据
+                    bool succeed = true;
+                    if (buffer[11] == 3)
+                        succeed = ErrorCode.CheckHeadError(buffer[15]);
+                    if (succeed)//no header error
+                    {
+                        //endcode为fins指令的返回错误码
+                        if (ErrorCode.CheckEndCode(buffer[28], buffer[29]))
+                        {
+                            //完全正确的返回，开始读取返回的具体数值
+                            byte[] temp = new byte[] { buffer[30 + 1], buffer[30], buffer[30 + 3], buffer[30 + 2] };
+                            reData = BitConverter.ToInt32(temp, 0);
+                            return 0;
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// 写一个int32的方法，在PLC中占两个字
+        /// </summary>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址，会读取两个连续的地址，因为int32在PLC中占两个字</param>
+        /// <param name="reData">返回一个int型</param>
+        /// <returns>0为成功</returns>
+        public short WriteInt32(PlcMemory mr, short ch, int reData)
+        {
+            byte[] temp = BitConverter.GetBytes(reData);
+
+            short[] wdata = new short[] { 0, 0 };
+            if (temp != null)
+                wdata[0] = BitConverter.ToInt16(temp, 0);
+            if (temp.Length > 2)
+                wdata[1] = BitConverter.ToInt16(temp, 2);
 
             short re = WriteWords(mr, ch, (short)2, wdata);
 

@@ -36,18 +36,23 @@ else
 #### 读/写 [read/write]
 ```CSharp
 /*所有方法返回0为成功*/
-ENT.ReadWord();//读单个
-ENT.ReadWords();//读多个
-ENT.WriteWord();//写单个
-ENT.WriteWords();//写多个
+ENT.ReadWord();//读单个Int16
+ENT.ReadWords();//读多个Int16
+ENT.WriteWord();//写单个Int16
+ENT.WriteWords();//写多个Int16
 ENT.GetBitState();//读单个位
 ENT.SetBitState();//写单个位
 ENT.ReadReal();//读单个浮点
 ENT.WriteReal();//写单个浮点
+ENT.ReadInt32();//读单个Int32
+ENT.WriteInt32();//写单个Int32
 ```
 #
 ### 版本记录：[version history]
 ###### *表示部分代码可能与前版本不兼容 [*For some code is incompatible with previous versions]
+## v3.0.2
+###### 1.修复写单个浮点BUG [Amend WriteReal()]
+###### 2.支持读写Int32 [Add ReadInt32(),WriteInt32()]
 ## v3.0.1
 ###### 1.支持写单个浮点 [Add WriteReal()]
 ## v3.0.0
