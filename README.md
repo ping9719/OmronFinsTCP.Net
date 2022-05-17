@@ -53,15 +53,16 @@ ENT.WriteInt32();//写单个Int32
 /*T支持的类型为：int16,int32,bool,float*/
 ENT.GetData<T>();//读一个数据
 ENT.SetData<T>();//写一个数据
-
-//未来可能推出... [being developed...]
 ENT.GetDatas<T>();//读多个数据
-ENT.SetDatas<T>();//写多个数据
+ENT.SetDatas<T>();//写多个数据（T支持的类型为：int16）
 ```
 
 #
 ### 版本记录：[version history]
 ###### *表示部分代码可能与前版本不兼容 [*For some code is incompatible with previous versions]
+## v3.1.2
+###### 1.泛型支持多个读写 [Generics support multiple reads and writes]
+###### 1.修复SetData无效问题 [Fix SetData\<T>()]
 ## v3.1.1
 ###### 1.优化GetData错误处理和效率问题 [Optimize GetData]
 ## v3.1.0

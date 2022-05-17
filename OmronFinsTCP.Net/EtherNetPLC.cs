@@ -175,25 +175,168 @@ namespace OmronFinsTCP.Net
         /// <returns>是否成功</returns>
         public bool SetData<T>(PlcMemory mr, object ch, T inData) where T : new()
         {
-            T t = new T();
             short isok = -1;
 
-            if (t is Int16 dInt16)
+            if (inData is Int16 dInt16)
             {
                 isok = WriteWord(mr, short.Parse(ch.ToString()), dInt16);
             }
-            else if (t is bool dBool)
+            else if (inData is bool dBool)
             {
                 isok = SetBitState(mr, ch.ToString(), dBool ? BitState.ON : BitState.OFF);
             }
-            else if (t is Int32 dInt32)
+            else if (inData is Int32 dInt32)
             {
                 isok = WriteInt32(mr, short.Parse(ch.ToString()), dInt32);
             }
-            else if (t is float dFloat)
+            else if (inData is float dFloat)
             {
                 isok = WriteReal(mr, short.Parse(ch.ToString()), dFloat);
             }
+            else
+            {
+                throw new Exception("暂不支持此类型");
+            }
+
+            return isok == 0;
+        }
+
+        /// <summary>
+        /// 得到多个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
+        /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
+        /// <param name="count">读取个数</param>
+        /// <returns>结果值</returns>
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">获取数据失败</exception>
+        public T[] GetDatas<T>(string mrch, int count) where T : new()
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return GetDatas<T>(mr, txtq, count);
+        }
+
+        /// <summary>
+        /// 得到多个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址（地址：100；位：100.01）</param>
+        /// <param name="count">读取个数</param>
+        /// <returns>结果值</returns>
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">获取数据失败</exception>
+        public T[] GetDatas<T>(PlcMemory mr, object ch, int count) where T : new()
+        {
+            T t = new T();
+            if (t is Int16)
+            {
+                var isok = ReadWords(mr, short.Parse(ch.ToString()), Convert.ToInt16(count), out short[] reData);
+                if (isok == 0)
+                    return (T[])(object)reData;
+            }
+            else if (t is bool)
+            {
+                T[] ts = new T[count];
+
+                short cnInt = short.Parse(ch.ToString().Split('.')[0]);
+                short cnBit = short.Parse(ch.ToString().Split('.')[1]);//0-15
+
+                for (int i = 0; i < ts.Length; i++)
+                {
+                    var isok = GetBitState(mr, $"{cnInt}.{cnBit}", out short bs);
+                    if (isok == 0)
+                        ts[i] = (T)(object)(bs == 1);
+                    else
+                        throw new Exception("获取数据失败");
+
+                    cnBit++;
+                    if (cnBit > 15)
+                    {
+                        cnInt++;
+                        cnBit = 0;
+                    }
+                }
+                return ts;
+            }
+            else if (t is Int32)
+            {
+                T[] ts = new T[count];
+
+                var ch2 = short.Parse(ch.ToString());
+                for (int i = 0; i < ts.Length; i++)
+                {
+                    var isok = ReadInt32(mr, Convert.ToInt16(ch2 + i), out int reData);
+                    if (isok == 0)
+                        ts[i] = (T)(object)reData;
+                    else
+                        throw new Exception("获取数据失败");
+                }
+                return ts;
+            }
+            else if (t is float)
+            {
+                T[] ts = new T[count];
+
+                var ch2 = short.Parse(ch.ToString());
+                for (int i = 0; i < ts.Length; i++)
+                {
+                    var isok = ReadReal(mr, Convert.ToInt16(ch2 + i), out float reData);
+                    if (isok == 0)
+                        ts[i] = (T)(object)reData;
+                    else
+                        throw new Exception("获取数据失败");
+                }
+                return ts;
+            }
+            else
+                throw new Exception("暂不支持此类型");
+
+            throw new Exception("获取数据失败");
+        }
+
+        /// <summary>
+        /// 设置多个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,</typeparam>
+        /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
+        /// <param name="inDatas">写入的数据</param>
+        /// <returns>是否成功</returns>
+        public bool SetDatas<T>(string mrch, params T[] inDatas) where T : new()
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return SetDatas<T>(mr, txtq, inDatas);
+        }
+
+        /// <summary>
+        /// 设置多个数据
+        /// </summary>
+        /// <typeparam name="T">支持：int16,</typeparam>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">起始地址（地址：100；位：100.01）</param>
+        /// <param name="inDatas">写入的数据</param>
+        /// <returns>是否成功</returns>
+        public bool SetDatas<T>(PlcMemory mr, object ch, params T[] inDatas) where T : new()
+        {
+            short isok = -1;
+
+            if (inDatas is Int16[] dInt16)
+            {
+                isok = WriteWords(mr, short.Parse(ch.ToString()), Convert.ToInt16(dInt16.Length), dInt16);
+            }
+            //循环写不一定保证每一个都成功
+            //else if (inDatas is bool[] dBool)
+            //{
+            //    isok = SetBitState(mr, ch.ToString(), dBool ? BitState.ON : BitState.OFF);
+            //}
+            //else if (inDatas is Int32[] dInt32)
+            //{
+            //    isok = WriteInt32(mr, short.Parse(ch.ToString()), dInt32);
+            //}
+            //else if (inDatas is float[] dFloat)
+            //{
+            //    isok = WriteReal(mr, short.Parse(ch.ToString()), dFloat);
+            //}
             else
             {
                 throw new Exception("暂不支持此类型");
@@ -644,6 +787,18 @@ namespace OmronFinsTCP.Net
         /// <summary>
         /// 读一个int32的方法，在PLC中占两个字
         /// </summary>
+        /// <param name="mrch">起始地址，会读取两个连续的地址，因为int32在PLC中占两个字</param>
+        /// <param name="reData">返回一个int型</param>
+        /// <returns>0为成功</returns>
+        public short ReadInt32(string mrch, out int reData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return ReadInt32(mr, short.Parse(txtq), out reData);
+        }
+
+        /// <summary>
+        /// 读一个int32的方法，在PLC中占两个字
+        /// </summary>
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">起始地址，会读取两个连续的地址，因为int32在PLC中占两个字</param>
         /// <param name="reData">返回一个int型</param>
@@ -691,6 +846,18 @@ namespace OmronFinsTCP.Net
             {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// 写一个int32的方法，在PLC中占两个字
+        /// </summary>
+        /// <param name="mrch">起始地址，会读取两个连续的地址，因为int32在PLC中占两个字</param>
+        /// <param name="reData">返回一个int型</param>
+        /// <returns>0为成功</returns>
+        public short WriteInt32(string mrch, int reData)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return WriteInt32(mr, short.Parse(txtq), reData);
         }
 
         /// <summary>
