@@ -102,6 +102,8 @@ namespace OmronFinsTCP.Net
         /// <typeparam name="T">支持：int16,int32,bool,float</typeparam>
         /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
         /// <returns>结果值</returns>
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">获取数据失败</exception>
         public T GetData<T>(string mrch) where T : new()
         {
             var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
@@ -115,6 +117,8 @@ namespace OmronFinsTCP.Net
         /// <param name="mr">地址类型枚举</param>
         /// <param name="ch">起始地址（地址：100；位：100.01）</param>
         /// <returns>结果值</returns>
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">获取数据失败</exception>
         public T GetData<T>(PlcMemory mr, object ch) where T : new()
         {
             T t = new T();
@@ -124,17 +128,17 @@ namespace OmronFinsTCP.Net
                 if (isok == 0)
                     return (T)(object)reData;
             }
-            if (t is Int32)
-            {
-                var isok = ReadInt32(mr, short.Parse(ch.ToString()), out int reData);
-                if (isok == 0)
-                    return (T)(object)reData;
-            }
             else if (t is bool)
             {
                 var isok = GetBitState(mr, ch.ToString(), out short bs);
                 if (isok == 0)
                     return (T)(object)(bs == 1);
+            }
+            else if (t is Int32)
+            {
+                var isok = ReadInt32(mr, short.Parse(ch.ToString()), out int reData);
+                if (isok == 0)
+                    return (T)(object)reData;
             }
             else if (t is float)
             {
@@ -143,11 +147,9 @@ namespace OmronFinsTCP.Net
                     return (T)(object)reData;
             }
             else
-            {
                 throw new Exception("暂不支持此类型");
-            }
 
-            return t;
+            throw new Exception("获取数据失败");
         }
 
         /// <summary>
@@ -180,13 +182,13 @@ namespace OmronFinsTCP.Net
             {
                 isok = WriteWord(mr, short.Parse(ch.ToString()), dInt16);
             }
-            if (t is Int32 dInt32)
-            {
-                isok = WriteInt32(mr, short.Parse(ch.ToString()), dInt32);
-            }
             else if (t is bool dBool)
             {
                 isok = SetBitState(mr, ch.ToString(), dBool ? BitState.ON : BitState.OFF);
+            }
+            else if (t is Int32 dInt32)
+            {
+                isok = WriteInt32(mr, short.Parse(ch.ToString()), dInt32);
             }
             else if (t is float dFloat)
             {
