@@ -62,6 +62,8 @@ ENT.SetDatas<T>();//写多个数据
 #
 ### 版本记录：[version history]
 ###### *表示部分代码可能与前版本不兼容 [*For some code is incompatible with previous versions]
+## v3.1.1
+###### 1.优化GetData错误处理和效率问题 [Optimize GetData]
 ## v3.1.0
 ###### 1.支持泛型读写单个 [Add GetData\<T>(),SetData\<T>()]
 ## v3.0.2
