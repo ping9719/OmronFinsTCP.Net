@@ -88,7 +88,7 @@ namespace FinsDebuger
             }
             else if (radioButton77.Checked)
             {
-                isok = ENT.SetData(textBox4.Text, bool.Parse(textBox2.Text));
+                isok = ENT.SetData(textBox4.Text, radioButton5.Checked);
             }
             else if (radioButton88.Checked)
             {
@@ -100,7 +100,12 @@ namespace FinsDebuger
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ENT.Close();
+            ENT?.Close();
+        }
+
+        private void radioButton77_CheckedChanged(object sender, EventArgs e)
+        {
+            panel3.Visible = radioButton77.Checked;
         }
     }
 }

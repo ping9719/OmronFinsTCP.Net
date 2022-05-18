@@ -16,7 +16,10 @@ Install-Package POmronFinsTCP.Net
 
 ### 列子:[ensample code:]
 ```CSharp
+//普通方式列子
 FinsDebuger/Form1.cs
+//泛型方式列子
+FinsDebuger/Form2.cs
 ```
 #
 

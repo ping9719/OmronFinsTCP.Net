@@ -52,8 +52,12 @@ namespace FinsDebuger
             this.txtPlcport = new System.Windows.Forms.TextBox();
             this.btnCon = new System.Windows.Forms.Button();
             this.txtPlcip = new System.Windows.Forms.TextBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // radioButton1
@@ -110,7 +114,7 @@ namespace FinsDebuger
             // 
             this.txtAddress.Location = new System.Drawing.Point(3, 30);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(265, 21);
+            this.txtAddress.Size = new System.Drawing.Size(230, 21);
             this.txtAddress.TabIndex = 11;
             this.txtAddress.Text = "W100.1";
             // 
@@ -126,19 +130,19 @@ namespace FinsDebuger
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(274, 30);
+            this.textBox1.Location = new System.Drawing.Point(239, 30);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(85, 21);
+            this.textBox1.Size = new System.Drawing.Size(120, 21);
             this.textBox1.TabIndex = 14;
             this.textBox1.Text = "1";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(271, 25);
+            this.textBox2.Location = new System.Drawing.Point(242, 25);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(88, 21);
+            this.textBox2.Size = new System.Drawing.Size(117, 21);
             this.textBox2.TabIndex = 22;
-            this.textBox2.Text = "true";
+            this.textBox2.Text = "1";
             // 
             // button2
             // 
@@ -162,7 +166,7 @@ namespace FinsDebuger
             // 
             this.textBox4.Location = new System.Drawing.Point(3, 25);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(262, 21);
+            this.textBox4.Size = new System.Drawing.Size(230, 21);
             this.textBox4.TabIndex = 19;
             this.textBox4.Text = "W100.1";
             // 
@@ -185,6 +189,7 @@ namespace FinsDebuger
             this.radioButton77.TabIndex = 17;
             this.radioButton77.Text = "bool";
             this.radioButton77.UseVisualStyleBackColor = true;
+            this.radioButton77.CheckedChanged += new System.EventHandler(this.radioButton77_CheckedChanged);
             // 
             // radioButton66
             // 
@@ -225,6 +230,7 @@ namespace FinsDebuger
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.radioButton55);
             this.panel2.Controls.Add(this.radioButton66);
             this.panel2.Controls.Add(this.textBox2);
@@ -282,6 +288,38 @@ namespace FinsDebuger
             this.txtPlcip.TabIndex = 25;
             this.txtPlcip.Text = "10.10.56.14";
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.radioButton6);
+            this.panel3.Controls.Add(this.radioButton5);
+            this.panel3.Location = new System.Drawing.Point(239, 25);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(120, 21);
+            this.panel3.TabIndex = 23;
+            this.panel3.Visible = false;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Checked = true;
+            this.radioButton5.Location = new System.Drawing.Point(3, 3);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(47, 16);
+            this.radioButton5.TabIndex = 17;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "True";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Location = new System.Drawing.Point(55, 3);
+            this.radioButton6.Name = "radioButton6";
+            this.radioButton6.Size = new System.Drawing.Size(53, 16);
+            this.radioButton6.TabIndex = 18;
+            this.radioButton6.Text = "False";
+            this.radioButton6.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -301,6 +339,8 @@ namespace FinsDebuger
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -331,5 +371,8 @@ namespace FinsDebuger
         private System.Windows.Forms.TextBox txtPlcport;
         private System.Windows.Forms.Button btnCon;
         private System.Windows.Forms.TextBox txtPlcip;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.RadioButton radioButton6;
+        private System.Windows.Forms.RadioButton radioButton5;
     }
 }
