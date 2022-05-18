@@ -22,18 +22,19 @@ namespace OmronFinsTCP.Net
             switch (da)
             {
                 case 'D':
-                    pm = PlcMemory.CIO;
+                    pm = PlcMemory.DM;
                     break;
                 case 'W':
-                    pm = PlcMemory.CIO;
+                    pm = PlcMemory.WR;
                     break;
                 case 'H':
-                    pm = PlcMemory.CIO;
+                    pm = PlcMemory.HR;
                     break;
                 case 'A':
-                    pm = PlcMemory.CIO;
+                    pm = PlcMemory.AR;
                     break;
                 case 'C':
+                case 'I':
                     pm = PlcMemory.CIO;
                     break;
                 default:

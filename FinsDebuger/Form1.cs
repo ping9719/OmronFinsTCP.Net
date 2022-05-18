@@ -56,7 +56,7 @@ namespace FinsDebuger
                 if (re == 0)
                 {
                     btnCon.Text = "断开";
-                    txtPCNode.Text = ENT.PCNode.ToString();
+                    txtPCNode.Text = ENT.PcNode.ToString();
                 }
                 else
                 {
