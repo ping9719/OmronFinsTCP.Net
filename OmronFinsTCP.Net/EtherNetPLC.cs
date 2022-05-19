@@ -22,6 +22,10 @@ namespace OmronFinsTCP.Net
         //内部方法，发送数据
         private short SendData(byte[] sd)
         {
+            //没有连接
+            if (stream == null)
+                return -1;
+
             try
             {
                 stream.Write(sd, 0, sd.Length);
@@ -36,6 +40,10 @@ namespace OmronFinsTCP.Net
         //内部方法，接收数据
         private short ReceiveData(byte[] rd)
         {
+            //没有连接
+            if (stream == null)
+                return -1;
+
             try
             {
                 //等待可读数据到底指定的长度，自己想的方法，下面的另一写法参考网络。
