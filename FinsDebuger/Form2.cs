@@ -77,25 +77,31 @@ namespace FinsDebuger
 
         private void button2_Click(object sender, EventArgs e)
         {
-            bool isok = false;
-            if (radioButton55.Checked)
+            try
             {
-                isok = ENT.SetData(textBox4.Text, Int16.Parse(textBox2.Text));
-            }
-            else if (radioButton66.Checked)
-            {
-                isok = ENT.SetData(textBox4.Text, int.Parse(textBox2.Text));
-            }
-            else if (radioButton77.Checked)
-            {
-                isok = ENT.SetData(textBox4.Text, radioButton5.Checked);
-            }
-            else if (radioButton88.Checked)
-            {
-                isok = ENT.SetData(textBox4.Text, float.Parse(textBox2.Text));
-            }
+                if (radioButton55.Checked)
+                {
+                    ENT.SetData(textBox4.Text, Int16.Parse(textBox2.Text));
+                }
+                else if (radioButton66.Checked)
+                {
+                    ENT.SetData(textBox4.Text, int.Parse(textBox2.Text));
+                }
+                else if (radioButton77.Checked)
+                {
+                    ENT.SetData(textBox4.Text, radioButton5.Checked);
+                }
+                else if (radioButton88.Checked)
+                {
+                    ENT.SetData(textBox4.Text, float.Parse(textBox2.Text));
+                }
 
-            textBox3.Text = (isok ? "成功" : "失败") + DateTime.Now.ToString();
+                textBox3.Text = "成功" + DateTime.Now.ToString();
+            }
+            catch (Exception ex)
+            {
+                textBox3.Text = "失败" + DateTime.Now.ToString();
+            }
         }
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
