@@ -63,6 +63,8 @@ ENT.SetDatas<T>();//写多个数据（T支持的类型为：int16）
 #
 ### 版本记录：[version history]
 ###### *表示部分代码可能与前版本不兼容 [*For some code is incompatible with previous versions]
+## v3.2.2*
+###### 1.SetData错误处理改为抛出异常 [The 'SetData()' error is throwing an exception]
 ## v3.2.1
 ###### 1.没有连接时错误优化 [No connection error handling]
 ## v3.2.0

@@ -250,7 +250,7 @@ namespace OmronFinsTCP.Net
         /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
         /// <returns>结果值</returns>
         /// <exception cref="Exception">暂不支持此类型</exception>
-        /// <exception cref="Exception">获取数据失败</exception>
+        /// <exception cref="Exception">读取数据失败</exception>
         public T GetData<T>(string mrch) where T : new()
         {
             var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
@@ -265,7 +265,7 @@ namespace OmronFinsTCP.Net
         /// <param name="ch">起始地址（地址：100；位：100.01）</param>
         /// <returns>结果值</returns>
         /// <exception cref="Exception">暂不支持此类型</exception>
-        /// <exception cref="Exception">获取数据失败</exception>
+        /// <exception cref="Exception">读取数据失败</exception>
         public T GetData<T>(PlcMemory mr, object ch) where T : new()
         {
             T t = new T();
@@ -296,7 +296,7 @@ namespace OmronFinsTCP.Net
             else
                 throw new Exception("暂不支持此类型");
 
-            throw new Exception("获取数据失败");
+            throw new Exception("读取数据失败");
         }
 
         /// <summary>
@@ -306,10 +306,12 @@ namespace OmronFinsTCP.Net
         /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
         /// <param name="inData">写入的数据</param>
         /// <returns>是否成功</returns>
-        public bool SetData<T>(string mrch, T inData) where T : new()
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">写入数据失败</exception>
+        public void SetData<T>(string mrch, T inData) where T : new()
         {
             var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
-            return SetData(mr, txtq, inData);
+            SetData(mr, txtq, inData);
         }
 
         /// <summary>
@@ -320,7 +322,9 @@ namespace OmronFinsTCP.Net
         /// <param name="ch">起始地址（地址：100；位：100.01）</param>
         /// <param name="inData">写入的数据</param>
         /// <returns>是否成功</returns>
-        public bool SetData<T>(PlcMemory mr, object ch, T inData) where T : new()
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">写入数据失败</exception>
+        public void SetData<T>(PlcMemory mr, object ch, T inData) where T : new()
         {
             short isok = -1;
 
@@ -345,7 +349,8 @@ namespace OmronFinsTCP.Net
                 throw new Exception("暂不支持此类型");
             }
 
-            return isok == 0;
+            if (isok != 0)
+                throw new Exception("写入数据失败");
         }
 
         /// <summary>
@@ -356,7 +361,7 @@ namespace OmronFinsTCP.Net
         /// <param name="count">读取个数</param>
         /// <returns>结果值</returns>
         /// <exception cref="Exception">暂不支持此类型</exception>
-        /// <exception cref="Exception">获取数据失败</exception>
+        /// <exception cref="Exception">读取数据失败</exception>
         public T[] GetDatas<T>(string mrch, int count) where T : new()
         {
             var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
@@ -372,7 +377,7 @@ namespace OmronFinsTCP.Net
         /// <param name="count">读取个数</param>
         /// <returns>结果值</returns>
         /// <exception cref="Exception">暂不支持此类型</exception>
-        /// <exception cref="Exception">获取数据失败</exception>
+        /// <exception cref="Exception">读取数据失败</exception>
         public T[] GetDatas<T>(PlcMemory mr, object ch, int count) where T : new()
         {
             T t = new T();
@@ -395,7 +400,7 @@ namespace OmronFinsTCP.Net
                     if (isok == 0)
                         ts[i] = (T)(object)(bs == 1);
                     else
-                        throw new Exception("获取数据失败");
+                        throw new Exception("读取数据失败");
 
                     cnBit++;
                     if (cnBit > 15)
@@ -417,7 +422,7 @@ namespace OmronFinsTCP.Net
                     if (isok == 0)
                         ts[i] = (T)(object)reData;
                     else
-                        throw new Exception("获取数据失败");
+                        throw new Exception("读取数据失败");
                 }
                 return ts;
             }
@@ -432,14 +437,14 @@ namespace OmronFinsTCP.Net
                     if (isok == 0)
                         ts[i] = (T)(object)reData;
                     else
-                        throw new Exception("获取数据失败");
+                        throw new Exception("读取数据失败");
                 }
                 return ts;
             }
             else
                 throw new Exception("暂不支持此类型");
 
-            throw new Exception("获取数据失败");
+            throw new Exception("读取数据失败");
         }
 
         /// <summary>
@@ -449,10 +454,12 @@ namespace OmronFinsTCP.Net
         /// <param name="mrch">起始地址（地址：D100；位：W100.1）</param>
         /// <param name="inDatas">写入的数据</param>
         /// <returns>是否成功</returns>
-        public bool SetDatas<T>(string mrch, params T[] inDatas) where T : new()
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">写入数据失败</exception>
+        public void SetDatas<T>(string mrch, params T[] inDatas) where T : new()
         {
             var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
-            return SetDatas<T>(mr, txtq, inDatas);
+            SetDatas<T>(mr, txtq, inDatas);
         }
 
         /// <summary>
@@ -463,7 +470,9 @@ namespace OmronFinsTCP.Net
         /// <param name="ch">起始地址（地址：100；位：100.01）</param>
         /// <param name="inDatas">写入的数据</param>
         /// <returns>是否成功</returns>
-        public bool SetDatas<T>(PlcMemory mr, object ch, params T[] inDatas) where T : new()
+        /// <exception cref="Exception">暂不支持此类型</exception>
+        /// <exception cref="Exception">写入数据失败</exception>
+        public void SetDatas<T>(PlcMemory mr, object ch, params T[] inDatas) where T : new()
         {
             short isok = -1;
 
@@ -489,7 +498,8 @@ namespace OmronFinsTCP.Net
                 throw new Exception("暂不支持此类型");
             }
 
-            return isok == 0;
+            if (isok != 0)
+                throw new Exception("写入数据失败");
         }
         #endregion
 
