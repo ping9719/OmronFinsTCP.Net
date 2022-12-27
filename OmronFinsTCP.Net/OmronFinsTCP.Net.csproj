@@ -10,9 +10,9 @@
 https://github.com/ping9719/OmronFinsTCP.Net</Description>
     <PackageProjectUrl>https://github.com/ping9719/OmronFinsTCP.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ping9719/OmronFinsTCP.Net</RepositoryUrl>
-    <AssemblyVersion>3.2.2.0</AssemblyVersion>
-    <FileVersion>3.2.2.0</FileVersion>
-    <Version>3.2.2</Version>
+    <AssemblyVersion>3.3.0.0</AssemblyVersion>
+    <FileVersion>3.3.0.0</FileVersion>
+    <Version>3.3.0</Version>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

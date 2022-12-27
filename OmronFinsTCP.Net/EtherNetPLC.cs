@@ -141,7 +141,7 @@ namespace OmronFinsTCP.Net
             array[23] = PcNode;//SA1
 
             array[24] = 0x00;//SA2, CPU unit
-            array[25] = 0xFF;
+            array[25] = 0xFF;//SID, 请求方ip
             //TODO：array[25] = Convert.ToByte(21);//SID//?????----------------------------------00-FF任意值
 
             //指令码
@@ -158,10 +158,17 @@ namespace OmronFinsTCP.Net
             //地址
             //array[28] = (byte)mr;
             array[28] = FinsClass.GetMemoryCode(mr, mt);
-            array[29] = (byte)(ch / 256);
-            array[30] = (byte)(ch % 256);
-            array[31] = (byte)offset;
-
+            if (mr== PlcMemory.CNT)
+            {
+                array[29] = (byte)(ch / 256 + 128);
+                array[30] = (byte)(ch % 256);
+            }
+            else
+            {
+                array[29] = (byte)(ch / 256);
+                array[30] = (byte)(ch % 256);
+                array[31] = (byte)offset;
+            }
             array[32] = (byte)(cnt / 256);
             array[33] = (byte)(cnt % 256);
 
@@ -386,30 +393,40 @@ namespace OmronFinsTCP.Net
                 var isok = ReadWords(mr, short.Parse(ch.ToString()), Convert.ToInt16(count), out short[] reData);
                 if (isok == 0)
                     return (T[])(object)reData;
+                else
+                    throw new Exception("读取数据失败");
             }
             else if (t is bool)
             {
+                //T[] ts = new T[count];
+
+                //short cnInt = short.Parse(ch.ToString().Split('.')[0]);
+                //short cnBit = short.Parse(ch.ToString().Split('.')[1]);//0-15
+
+                //for (int i = 0; i < ts.Length; i++)
+                //{
+                //    var isok = GetBitState(mr, $"{cnInt}.{cnBit}", out short bs);
+                //    if (isok == 0)
+                //        ts[i] = (T)(object)(bs == 1);
+                //    else
+                //        throw new Exception("读取数据失败");
+                //    //ts[i] = default(T); // 读取失败
+
+                //    cnBit++;
+                //    if (cnBit > 15)
+                //    {
+                //        cnInt++;
+                //        cnBit = 0;
+                //    }
+                //}
+                //return ts;
                 T[] ts = new T[count];
+                var isok = GetBitStates(mr, ch.ToString(), out bool[] reData, (short)count);
+                if (isok == 0)
+                    return (T[])(object)reData;
+                else
+                    throw new Exception("读取数据失败");
 
-                short cnInt = short.Parse(ch.ToString().Split('.')[0]);
-                short cnBit = short.Parse(ch.ToString().Split('.')[1]);//0-15
-
-                for (int i = 0; i < ts.Length; i++)
-                {
-                    var isok = GetBitState(mr, $"{cnInt}.{cnBit}", out short bs);
-                    if (isok == 0)
-                        ts[i] = (T)(object)(bs == 1);
-                    else
-                        throw new Exception("读取数据失败");
-
-                    cnBit++;
-                    if (cnBit > 15)
-                    {
-                        cnInt++;
-                        cnBit = 0;
-                    }
-                }
-                return ts;
             }
             else if (t is Int32)
             {
@@ -441,7 +458,7 @@ namespace OmronFinsTCP.Net
                 }
                 return ts;
             }
-            else
+            else 
                 throw new Exception("暂不支持此类型");
 
             throw new Exception("读取数据失败");
@@ -724,6 +741,73 @@ namespace OmronFinsTCP.Net
         {
             var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
             return GetBitState(mr, txtq, out bs);
+        }
+
+        /// <summary>
+        /// 读值方法-按位bit（单个）
+        /// </summary>
+        /// <param name="mrch">起始地址。如：W100.1</param>
+        /// <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
+        /// <returns>0为成功</returns>
+        public short GetBitStates(string mrch, out bool[] bs, short cnt = 1)
+        {
+            var mr = ConvertClass.GetPlcMemory(mrch, out string txtq);
+            return GetBitStates(mr, txtq, out bs, cnt);
+        }
+
+        /// <summary>
+        /// 读值方法-按位bit（单个）
+        /// </summary>
+        /// <param name="mr">地址类型枚举</param>
+        /// <param name="ch">地址000.00</param>
+        /// <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
+        /// <returns>0为成功</returns>
+        public short GetBitStates(PlcMemory mr, string ch, out bool[] bs, short cnt = 1)
+        {
+            bs = new bool[cnt];
+            byte[] buffer = new byte[30 + cnt];//用于接收数据的缓存区大小
+            short cnInt = short.Parse(ch.Split('.')[0]);
+            short cnBit = short.Parse(ch.Split('.')[1]);
+            byte[] array = FinsCmd(RorW.Read, mr, MemoryType.Bit, cnInt, cnBit, cnt);
+            if (SendData(array) == 0)
+            {
+                if (ReceiveData(buffer) == 0)
+                {
+                    //命令返回成功，继续查询是否有错误码，然后在读取数据
+                    bool succeed = true;
+                    if (buffer[11] == 3)
+                        succeed = ErrorCode.CheckHeadError(buffer[15]);
+                    if (succeed)//no header error
+                    {
+                        //endcode为fins指令的返回错误码
+                        if (ErrorCode.CheckEndCode(buffer[28], buffer[29]))
+                        {
+                            //完全正确的返回，开始读取返回的具体数值
+                            for (int i = 0; i < cnt; i++)
+                            {
+                                bs[i] = buffer[30 + i] == 1;
+                            }
+                            return 0;
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         /// <summary>

@@ -29,6 +29,9 @@ namespace OmronFinsTCP.Net
                         return 0x33;
                     case PlcMemory.DM:
                         return 0x02;
+                    case PlcMemory.CNT:
+                    case PlcMemory.TIM:
+                        return 0x09;
                     default:
                         return 0x00;
                 }
@@ -47,6 +50,9 @@ namespace OmronFinsTCP.Net
                         return 0xB3;
                     case PlcMemory.DM:
                         return 0x82;
+                    case PlcMemory.CNT:
+                    case PlcMemory.TIM:
+                        return 0x89;
                     default:
                         return 0x00;
                 }

@@ -24,7 +24,10 @@ namespace OmronFinsTCP.Net
         WR,
         HR,
         AR,
-        DM
+        DM,
+        CNT,
+        TIM,
+
     }
 
     /// <summary>

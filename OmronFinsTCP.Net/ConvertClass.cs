@@ -34,8 +34,13 @@ namespace OmronFinsTCP.Net
                     pm = PlcMemory.AR;
                     break;
                 case 'C':
+                    pm = PlcMemory.CNT;
+                    break;
                 case 'I':
                     pm = PlcMemory.CIO;
+                    break;
+                case 'T':
+                    pm = PlcMemory.TIM;
                     break;
                 default:
                     throw new Exception($"寄存器【{txt}】无效的前缀[{da}]");
