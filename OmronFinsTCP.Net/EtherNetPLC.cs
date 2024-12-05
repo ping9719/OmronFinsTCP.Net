@@ -191,7 +191,7 @@ namespace OmronFinsTCP.Net
         /// <param name="rPort">端口号，一般为9600</param>
         /// <param name="timeOut">超时时间，默认3000毫秒</param>
         /// <returns>0为成功</returns>
-        public short Link(string rIP, int rPort, short timeOut = 3000)
+        public short Link(string rIP, int rPort = 9600, short timeOut = 3000)
         {
             if (BasicClass.PingCheck(rIP, timeOut))
             {

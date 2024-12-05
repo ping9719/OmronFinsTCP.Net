@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.5;netstandard2.0;net5.0</TargetFrameworks>
+	  <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>POmronFinsTCP.Net</PackageId>
     <Authors>ping9719</Authors>
@@ -10,9 +10,9 @@
 https://github.com/ping9719/OmronFinsTCP.Net</Description>
     <PackageProjectUrl>https://github.com/ping9719/OmronFinsTCP.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ping9719/OmronFinsTCP.Net</RepositoryUrl>
-    <AssemblyVersion>3.3.0.0</AssemblyVersion>
-    <FileVersion>3.3.0.0</FileVersion>
-    <Version>3.3.0</Version>
+    <AssemblyVersion>3.3.1.0</AssemblyVersion>
+    <FileVersion>3.3.1.0</FileVersion>
+    <Version>3.3.1</Version>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
