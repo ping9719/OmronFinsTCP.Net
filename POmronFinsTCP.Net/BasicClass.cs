@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
 
-namespace OmronFinsTCP.Net
+namespace POmronFinsTCP.Net
 {
     partial class BasicClass
     {

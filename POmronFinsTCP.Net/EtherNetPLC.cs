@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Threading;
 
-namespace OmronFinsTCP.Net
+namespace POmronFinsTCP.Net
 {
     public class EtherNetPLC
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OmronFinsTCP.Net
+namespace POmronFinsTCP.Net
 {
     /// <summary>
     /// 寄存器类型,十六进制表示形式

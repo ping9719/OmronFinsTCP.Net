@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>OmronFinsTCP.Net</name>
+        <name>POmronFinsTCP.Net</name>
     </assembly>
     <members>
-        <member name="M:OmronFinsTCP.Net.ConvertClass.GetPlcMemory(System.String,System.String@)">
+        <member name="M:POmronFinsTCP.Net.ConvertClass.GetPlcMemory(System.String,System.String@)">
             <summary>
             得到枚举值
             </summary>
@@ -12,39 +12,39 @@
             <param name="txtq"></param>
             <returns></returns>
         </member>
-        <member name="T:OmronFinsTCP.Net.PlcMemory">
+        <member name="T:POmronFinsTCP.Net.PlcMemory">
             <summary>
             寄存器类型,十六进制表示形式
             </summary>
         </member>
-        <member name="T:OmronFinsTCP.Net.MemoryType">
+        <member name="T:POmronFinsTCP.Net.MemoryType">
             <summary>
             地址类型
             </summary>
         </member>
-        <member name="T:OmronFinsTCP.Net.DataType">
+        <member name="T:POmronFinsTCP.Net.DataType">
             <summary>
             数据类型,PLC字为16位数，最高位为符号位，负数表现形式为“取反加一”
             </summary>
         </member>
-        <member name="T:OmronFinsTCP.Net.BitState">
+        <member name="T:POmronFinsTCP.Net.BitState">
             <summary>
             bit位开关状态，on=1，off=0
             </summary>
         </member>
-        <member name="T:OmronFinsTCP.Net.RorW">
+        <member name="T:POmronFinsTCP.Net.RorW">
             <summary>
             区分指令的读写类型
             </summary>
         </member>
-        <member name="M:OmronFinsTCP.Net.ErrorCode.CheckHeadError(System.Byte)">
+        <member name="M:POmronFinsTCP.Net.ErrorCode.CheckHeadError(System.Byte)">
             <summary>
             （若返回的头指令为3）检查命令头中的错误代码
             </summary>
             <param name="Code">错误代码</param>
             <returns>指示程序是否可以继续进行</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.ErrorCode.CheckEndCode(System.Byte,System.Byte)">
+        <member name="M:POmronFinsTCP.Net.ErrorCode.CheckEndCode(System.Byte,System.Byte)">
             <summary>
             检查命令帧中的EndCode
             </summary>
@@ -52,17 +52,17 @@
             <param name="Sub">副码</param>
             <returns>指示程序是否可以继续进行</returns>
         </member>
-        <member name="P:OmronFinsTCP.Net.EtherNetPLC.PlcNode">
+        <member name="P:POmronFinsTCP.Net.EtherNetPLC.PlcNode">
             <summary>
             PLC节点号
             </summary>
         </member>
-        <member name="P:OmronFinsTCP.Net.EtherNetPLC.PcNode">
+        <member name="P:POmronFinsTCP.Net.EtherNetPLC.PcNode">
             <summary>
             PC节点号
             </summary>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.FinsCmd(OmronFinsTCP.Net.RorW,OmronFinsTCP.Net.PlcMemory,OmronFinsTCP.Net.MemoryType,System.Int16,System.Int16,System.Int16)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.FinsCmd(POmronFinsTCP.Net.RorW,POmronFinsTCP.Net.PlcMemory,POmronFinsTCP.Net.MemoryType,System.Int16,System.Int16,System.Int16)">
             <summary>
             Fins读写指令生成
             </summary>
@@ -74,12 +74,12 @@
             <param name="cnt">地址个数,按位读写只能是1</param>
             <returns></returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.#ctor">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.#ctor">
             <summary>
             实例化PLC操作对象
             </summary>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.Link(System.String,System.Int32,System.Int16)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.Link(System.String,System.Int32,System.Int16)">
             <summary>
             与PLC建立TCP连接
             </summary>
@@ -88,13 +88,13 @@
             <param name="timeOut">超时时间，默认3000毫秒</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.Close">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.Close">
             <summary>
             关闭PLC操作对象的TCP连接
             </summary>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetData``1(System.String)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetData``1(System.String)">
             <summary>
             得到一个数据
             </summary>
@@ -104,7 +104,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">读取数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetData``1(OmronFinsTCP.Net.PlcMemory,System.Object)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetData``1(POmronFinsTCP.Net.PlcMemory,System.Object)">
             <summary>
             得到一个数据
             </summary>
@@ -115,7 +115,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">读取数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.SetData``1(System.String,``0)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.SetData``1(System.String,``0)">
             <summary>
             设置一个数据
             </summary>
@@ -126,7 +126,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">写入数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.SetData``1(OmronFinsTCP.Net.PlcMemory,System.Object,``0)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.SetData``1(POmronFinsTCP.Net.PlcMemory,System.Object,``0)">
             <summary>
             设置一个数据
             </summary>
@@ -138,7 +138,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">写入数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetDatas``1(System.String,System.Int32)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetDatas``1(System.String,System.Int32)">
             <summary>
             得到多个数据
             </summary>
@@ -149,7 +149,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">读取数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetDatas``1(OmronFinsTCP.Net.PlcMemory,System.Object,System.Int32)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetDatas``1(POmronFinsTCP.Net.PlcMemory,System.Object,System.Int32)">
             <summary>
             得到多个数据
             </summary>
@@ -161,7 +161,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">读取数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.SetDatas``1(System.String,``0[])">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.SetDatas``1(System.String,``0[])">
             <summary>
             设置多个数据
             </summary>
@@ -172,7 +172,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">写入数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.SetDatas``1(OmronFinsTCP.Net.PlcMemory,System.Object,``0[])">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.SetDatas``1(POmronFinsTCP.Net.PlcMemory,System.Object,``0[])">
             <summary>
             设置多个数据
             </summary>
@@ -184,7 +184,7 @@
             <exception cref="T:System.Exception">暂不支持此类型</exception>
             <exception cref="T:System.Exception">写入数据失败</exception>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadWords(System.String,System.Int16,System.Int16[]@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadWords(System.String,System.Int16,System.Int16[]@)">
             <summary>
             读值方法（多个连续值）
             </summary>
@@ -193,7 +193,7 @@
             <param name="reData">返回值</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadWords(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16,System.Int16[]@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadWords(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16,System.Int16[]@)">
             <summary>
             读值方法（多个连续值）
             </summary>
@@ -203,7 +203,7 @@
             <param name="reData">返回值</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadWord(System.String,System.Int16@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadWord(System.String,System.Int16@)">
             <summary>
             读单个字方法
             </summary>
@@ -211,7 +211,7 @@
             <param name="reData">返回值</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadWord(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadWord(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16@)">
             <summary>
             读单个字方法
             </summary>
@@ -220,7 +220,7 @@
             <param name="reData">返回值</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteWords(System.String,System.Int16,System.Int16[])">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteWords(System.String,System.Int16,System.Int16[])">
             <summary>
             写值方法（多个连续值）
             </summary>
@@ -229,7 +229,7 @@
             <param name="inData">写入值</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteWords(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16,System.Int16[])">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteWords(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16,System.Int16[])">
             <summary>
             写值方法（多个连续值）
             </summary>
@@ -239,7 +239,7 @@
             <param name="inData">写入值</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteWord(System.String,System.Int16)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteWord(System.String,System.Int16)">
             <summary>
             写单个字方法
             </summary>
@@ -247,7 +247,7 @@
             <param name="inData">写入数据</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteWord(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteWord(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Int16)">
             <summary>
             写单个字方法
             </summary>
@@ -256,7 +256,7 @@
             <param name="inData">写入数据</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetBitState(System.String,System.Int16@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetBitState(System.String,System.Int16@)">
             <summary>
             读值方法-按位bit（单个）
             </summary>
@@ -264,7 +264,7 @@
             <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetBitStates(System.String,System.Boolean[]@,System.Int16)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetBitStates(System.String,System.Boolean[]@,System.Int16)">
             <summary>
             读值方法-按位bit（单个）
             </summary>
@@ -272,7 +272,7 @@
             <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetBitStates(OmronFinsTCP.Net.PlcMemory,System.String,System.Boolean[]@,System.Int16)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetBitStates(POmronFinsTCP.Net.PlcMemory,System.String,System.Boolean[]@,System.Int16)">
             <summary>
             读值方法-按位bit（单个）
             </summary>
@@ -281,7 +281,7 @@
             <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.GetBitState(OmronFinsTCP.Net.PlcMemory,System.String,System.Int16@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.GetBitState(POmronFinsTCP.Net.PlcMemory,System.String,System.Int16@)">
             <summary>
             读值方法-按位bit（单个）
             </summary>
@@ -290,7 +290,7 @@
             <param name="bs">返回开关状态枚举EtherNetPLC.BitState，0/1</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.SetBitState(System.String,OmronFinsTCP.Net.BitState)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.SetBitState(System.String,POmronFinsTCP.Net.BitState)">
             <summary>
             写值方法-按位bit（单个）
             </summary>
@@ -298,7 +298,7 @@
             <param name="bs">开关状态枚举EtherNetPLC.BitState，0/1</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.SetBitState(OmronFinsTCP.Net.PlcMemory,System.String,OmronFinsTCP.Net.BitState)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.SetBitState(POmronFinsTCP.Net.PlcMemory,System.String,POmronFinsTCP.Net.BitState)">
             <summary>
             写值方法-按位bit（单个）
             </summary>
@@ -307,7 +307,7 @@
             <param name="bs">开关状态枚举EtherNetPLC.BitState，0/1</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadReal(System.String,System.Single@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadReal(System.String,System.Single@)">
             <summary>
             读一个浮点数的方法，单精度，在PLC中占两个字
             </summary>
@@ -315,7 +315,7 @@
             <param name="reData">返回一个float型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadReal(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Single@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadReal(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Single@)">
             <summary>
             读一个浮点数的方法，单精度，在PLC中占两个字
             </summary>
@@ -324,7 +324,7 @@
             <param name="reData">返回一个float型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteReal(System.String,System.Single)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteReal(System.String,System.Single)">
             <summary>
             写一个浮点数的方法，单精度，在PLC中占两个字
             </summary>
@@ -332,7 +332,7 @@
             <param name="reData">返回一个float型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteReal(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Single)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteReal(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Single)">
             <summary>
             写一个浮点数的方法，单精度，在PLC中占两个字
             </summary>
@@ -341,7 +341,7 @@
             <param name="reData">返回一个float型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadInt32(System.String,System.Int32@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadInt32(System.String,System.Int32@)">
             <summary>
             读一个int32的方法，在PLC中占两个字
             </summary>
@@ -349,7 +349,7 @@
             <param name="reData">返回一个int型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.ReadInt32(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Int32@)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.ReadInt32(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Int32@)">
             <summary>
             读一个int32的方法，在PLC中占两个字
             </summary>
@@ -358,7 +358,7 @@
             <param name="reData">返回一个int型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteInt32(System.String,System.Int32)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteInt32(System.String,System.Int32)">
             <summary>
             写一个int32的方法，在PLC中占两个字
             </summary>
@@ -366,7 +366,7 @@
             <param name="reData">返回一个int型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.EtherNetPLC.WriteInt32(OmronFinsTCP.Net.PlcMemory,System.Int16,System.Int32)">
+        <member name="M:POmronFinsTCP.Net.EtherNetPLC.WriteInt32(POmronFinsTCP.Net.PlcMemory,System.Int16,System.Int32)">
             <summary>
             写一个int32的方法，在PLC中占两个字
             </summary>
@@ -375,7 +375,7 @@
             <param name="reData">返回一个int型</param>
             <returns>0为成功</returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.FinsClass.GetMemoryCode(OmronFinsTCP.Net.PlcMemory,OmronFinsTCP.Net.MemoryType)">
+        <member name="M:POmronFinsTCP.Net.FinsClass.GetMemoryCode(POmronFinsTCP.Net.PlcMemory,POmronFinsTCP.Net.MemoryType)">
             <summary>
             获取内存区码
             </summary>
@@ -383,7 +383,7 @@
             <param name="mt">地址类型</param>
             <returns></returns>
         </member>
-        <member name="M:OmronFinsTCP.Net.FinsClass.HandShake">
+        <member name="M:POmronFinsTCP.Net.FinsClass.HandShake">
             <summary>
             PC请求连接的握手信号，第一次连接会分配PC节点号
             </summary>

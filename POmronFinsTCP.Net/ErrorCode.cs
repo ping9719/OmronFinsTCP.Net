@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OmronFinsTCP.Net
+namespace POmronFinsTCP.Net
 {
     partial class ErrorCode
     {
